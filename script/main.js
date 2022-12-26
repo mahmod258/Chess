@@ -1,4 +1,10 @@
-import { toArr, getByIndex, getbackOriginalColor } from "./commonOperations.js";
+import {
+  toArr,
+  getByIndex,
+  getbackOriginalColor,
+  equalPos,
+  getPosFromEl,
+} from "./commonOperations.js";
 import symbolsOperations from "./symbolsOperactions.js";
 
 let board = document.getElementById("board");
@@ -12,50 +18,44 @@ let chosen = null;
 
 //  #   #   #   #   #
 
-function move(symbol) {
+export function move(symbol) {
+  let parentElementSymbol = getPosFromEl(symbol.parentElement);
   if (
     chosen != null &&
-    chosen[0] === parseInt(symbol.parentElement.id.split(" ")[0]) &&
-    chosen[1] === parseInt(symbol.parentElement.id.split(" ")[1])
+    chosen[0] === parentElementSymbol[0] &&
+    chosen[1] === parentElementSymbol[1]
   ) {
     resetBlocks(lastPossibleBlocks);
     chosen = null;
     lastPossibleBlocks = [];
-    return;
-  }
-  if (
+  } else if (
     (teamTurn && symbol.classList[0] == "white") ||
     (!teamTurn && symbol.classList[0] == "black")
   ) {
     resetBlocks(lastPossibleBlocks);
-    lastPossibleBlocks = [];
-    symbolsOperations[symbol.classList[1]](
-      [
-        parseInt(symbol.parentElement.id.split(" ")[0]),
-        parseInt(symbol.parentElement.id.split(" ")[1]),
-      ],
-      lastPossibleBlocks
-    );
+    let parentSymbolPos = getPosFromEl(symbol.parentElement);
+    lastPossibleBlocks =
+      symbolsOperations[symbol.classList[1]](parentSymbolPos);
+    clearDangerousPos(symbol);
+    // getByIndex(parentSymbolPos).appendChild(symbol);
+    // lastPossibleBlocks =
+    //   symbolsOperations[symbol.classList[1]](parentSymbolPos);
     for (let i = 0; i < lastPossibleBlocks.length; i++) {
-      let currentEl = getByIndex(lastPossibleBlocks[i]);
-      currentEl.style.backgroundColor = "brown";
-      currentEl.onclick = () => {
-        changePlaces(lastPossibleBlocks[i], symbol, lastPossibleBlocks);
+      let currEl = getByIndex(lastPossibleBlocks[i]);
+      currEl.style.backgroundColor = "brown";
+      currEl.onclick = () => {
+        changePlaces(lastPossibleBlocks[i], symbol);
       };
-      if (currentEl.children.length > 0) currentEl.children[0].onclick = "";
+      if (currEl.children.length === 1) currEl.children[0].onclick = "";
     }
-    chosen = [
-      parseInt(symbol.parentElement.id.split(" ")[0]),
-      parseInt(symbol.parentElement.id.split(" ")[1]),
-    ];
+    chosen = parentSymbolPos;
   }
 }
 
-function changePlaces(newPos, symbol, lastPossibleBlocks) {
-  let symbol2 = symbol;
+function changePlaces(newPos, symbol) {
   let newPosDOM = getByIndex(newPos);
 
-  if (newPosDOM.children.length > 0) newPosDOM.children[0].remove();
+  if (newPosDOM.children.length === 1) newPosDOM.children[0].remove();
   newPosDOM.appendChild(symbol);
 
   resetBlocks(lastPossibleBlocks);
@@ -79,24 +79,56 @@ function setupBlocks() {
 
 function giveOnclicks() {
   for (let i = 0; i < symbols.length; i++) {
+    let symbol = symbols[i];
     symbols[i].onclick = () => {
-      move(symbols[i]);
+      move(symbol);
     };
   }
 }
 
-function takeawayOnclicks() {
-  for (let i = 0; i < symbols.length; i++) {
-    let pos = symbols[i].parentElement.id.split(" ");
-    symbols[i].onclick = "";
-  }
-}
 function resetBlocks(lastPossibleBlocks) {
   for (let i = 0; i < lastPossibleBlocks.length; i++) {
     let currEl = getByIndex(lastPossibleBlocks[i]);
     currEl.style.backgroundColor = getbackOriginalColor(lastPossibleBlocks[i]);
     if (currEl.children.length === 1)
-      currEl.children[0].onclick = () => move(currEl.children[0]);
+      currEl.children[0].onclick = () => {
+        move(currEl.children[0]);
+      };
     currEl.onclick = "";
   }
+}
+
+function clearDangerousPos(symbol) {
+  if (symbol.classList[1] == "king") return;
+  let color = teamTurn ? "white" : "black";
+  let enemyColor = !teamTurn ? "white" : "black";
+
+  let king = document.getElementsByClassName(color + " king")[0];
+  let kingPos = getPosFromEl(king.parentElement);
+  let enemySymbols = document.getElementsByClassName(enemyColor);
+
+  let parentElementSymbol = symbol.parentElement;
+  parentElementSymbol.children[0].remove();
+
+  let counThreatenes = 0;
+  for (let i = 0; i < enemySymbols.length; i++) {
+    if (enemySymbols[i].classList[1] == "king") continue;
+    let possibleMovesCurrEl = symbolsOperations[enemySymbols[i].classList[1]](
+      getPosFromEl(enemySymbols[i].parentElement)
+    );
+    for (let j = 0; j < possibleMovesCurrEl.length; i++) {
+      if (
+        equalPos(possibleMovesCurrEl[j], kingPos) &&
+        (++counThreatenes === 2 ||
+          "pawn" == symbol.classList[1] ||
+          "knight" == symbol.classList[1])
+      ) {
+        lastPossibleBlocks = [];
+        return;
+      }
+    }
+  }
+
+  parentElementSymbol.appendChild(symbol);
+  if (["pawn", "knight"].contains(symbol.classList[1])) return [];
 }

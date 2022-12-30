@@ -1,4 +1,4 @@
-export function getByIndex(pos) {
+export function getByPos(pos) {
   return document.getElementById(pos[0] + " " + pos[1]);
 }
 export function toArr(HTMLCollection) {

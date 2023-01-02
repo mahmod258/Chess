@@ -1,6 +1,10 @@
 body {
   background-color: antiquewhite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
 #board {
   position: absolute;
   left: 50%;
@@ -32,6 +36,7 @@ img {
   background-color: #eeeed2;
 }
 .gameOver {
+  display: none;
   position: absolute;
   left: 50%;
   top: 30%;
@@ -39,7 +44,6 @@ img {
   width: 300px;
   height: 200px;
   background-color: white;
-  display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
@@ -93,4 +97,22 @@ img {
 .gameOver > button:focus {
   box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
   outline: none;
+}
+.options {
+  display: flex;
+  background-color: white;
+  position: absolute;
+  gap: 10px;
+  margin-top: 20px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  border: 5px solid white;
+}
+.options > div {
+  background-color: #769656;
+  flex-direction: ;
+}
+.options > div:hover {
+  background-color: brown;
 }

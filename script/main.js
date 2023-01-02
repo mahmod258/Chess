@@ -7,8 +7,6 @@ import {
 } from "./commonOperations.js";
 import symbolsOperations from "./symbolsOperactions.js";
 
-let board = document.getElementById("board");
-
 setupBlocks();
 giveOnclicks();
 let possibleMovesEl = [];
@@ -56,6 +54,8 @@ function changePlaces(newPos, symbol) {
   newPosDOM.appendChild(symbol);
 
   if (symbol.classList[1] == "pawn") {
+    if (newPos[0] == 0 || newPos[0] == 7) pawnPromotion(newPos);
+
     symbol.classList.remove("firstMove");
   }
 
@@ -66,8 +66,10 @@ function changePlaces(newPos, symbol) {
 
   if (isGameOver()) {
     takeawayOnclicks();
-    let gameOver = document.createElement("div");
-    gameOver.classList.add("gameOver");
+    let gameOver = document.getElementsByClassName("gameOver")[0];
+
+    gameOver.style.display = "flex";
+
     gameOver.innerHTML = `<h1>${
       teamTurn ? "black" : "white"
     } won</h1>  <button>play again</button>
@@ -176,15 +178,15 @@ function clearDangerousPos(symbol) {
     return;
   }
   possibleMovesEl = [];
+  let threatenerPos = getPosFromEl(threatenerSymbol.parentElement);
+  let symbolPos = getPosFromEl(parentElementSymbol);
 
   if (
     (symbol.classList[1] == "rook" || symbol.classList[1] == "queen") &&
     (threatenerSymbol.classList[1] == "rook" ||
-      threatenerSymbol.classList[1] == "queen")
+      threatenerSymbol.classList[1] == "queen") &&
+    threatenerPos[1] == symbolPos[1]
   ) {
-    let threatenerPos = getPosFromEl(threatenerSymbol.parentElement);
-    let symbolPos = getPosFromEl(parentElementSymbol);
-
     if (symbolPos[0] > threatenerPos[0])
       for (let i = symbolPos[0] - 1; i >= threatenerPos[0]; i--)
         possibleMovesEl.push([i, symbolPos[1]]);
@@ -202,9 +204,6 @@ function clearDangerousPos(symbol) {
     (threatenerSymbol.classList[1] == "bishop" ||
       threatenerSymbol.classList[1] == "queen")
   ) {
-    let threatenerPos = getPosFromEl(threatenerSymbol.parentElement);
-    let symbolPos = getPosFromEl(parentElementSymbol);
-
     if (symbolPos[0] > threatenerPos[0] && symbolPos[1] > threatenerPos[1]) {
       let i = symbolPos[0] - 1,
         j = symbolPos[1] - 1;
@@ -323,4 +322,50 @@ function isGameOver() {
     }
   }
   return true;
+}
+function pawnPromotion(pos) {
+  let color = teamTurn ? "white" : "black";
+  let colorUpperCase = color[0].toUpperCase() + color.slice(1);
+  takeawayOnclicks();
+  let options = document.createElement("div");
+  options.classList.add("options");
+  options.innerHTML = `
+   <div>
+        <img src="imgs/${color}/${colorUpperCase}Bishop.png" alt="" />
+      </div>
+      <div>
+        <img src="imgs/${color}/${colorUpperCase}Knight.png" alt="" />
+      </div>
+      <div>
+        <img src="imgs/${color}/${colorUpperCase}Queen.png" alt="" />
+      </div>
+      <div>
+        <img src="imgs/${color}/${colorUpperCase}Rook.png" alt="" />
+      </div>
+  `;
+  let symbols = ["bishop", "knight", "queen", "rook"];
+  document.body.appendChild(options);
+  symbols.forEach(
+    (symbol, i) =>
+      (options.children[i].onclick = () =>
+        changeTo(symbol, pos, color, colorUpperCase))
+  );
+  options.style.top = color == "black" ? "505px" : "auto";
+}
+function changeTo(symbol, pos, color, colorUpperCase) {
+  let newSymbol = document.createElement("div");
+  newSymbol.className = color + " " + symbol + " symbol";
+  newSymbol.innerHTML = `<img src="imgs/${color}/${
+    colorUpperCase + (symbol[0].toUpperCase() + symbol.slice(1))
+  }.png" alt="">`;
+  console.log(
+    `<img src="imgs/${color}/${
+      colorUpperCase + (symbol[0].toUpperCase() + symbol.slice(1))
+    }.png" alt="">`
+  );
+  getByPos(pos).children[0].remove();
+  getByPos(pos).appendChild(newSymbol);
+  let options = document.getElementsByClassName("options")[0];
+  options.remove();
+  giveOnclicks();
 }

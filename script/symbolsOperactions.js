@@ -16,7 +16,8 @@ function possibleMovesPawn(pos) {
   let step = color == "white" ? -1 : 1;
 
   if ((color == "black" && pos[0] == 7) || (color == "white" && pos[0] == 0))
-    return;
+    return possibleMovesEl;
+
   if (getByPos([pos[0] + step, pos[1]]).children.length == 0) {
     possibleMovesEl.push([pos[0] + step, pos[1]]);
     if (
@@ -26,6 +27,7 @@ function possibleMovesPawn(pos) {
       possibleMovesEl.push([pos[0] + 2 * step, pos[1]]);
     }
   }
+
   if (pos[1] < 7) {
     let temp1 = getByPos([pos[0] + step, pos[1] + 1]).children;
     if (temp1.length == 1 && !temp1[0].classList.contains(color)) {
@@ -43,6 +45,7 @@ function possibleMovesPawn(pos) {
       possibleMovesEl.push([pos[0] + step, pos[1] - 1]);
     }
   }
+
   return possibleMovesEl;
 }
 

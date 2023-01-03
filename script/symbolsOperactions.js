@@ -354,27 +354,27 @@ function possibleMovesKing(pos, chosen = true) {
     );
     let king = getByPos(pos).children[0];
     king.parentElement.children[0].remove();
-
     for (let i = 0; i < oppositeSymbols.length; i++) {
       if (oppositeSymbols[i].classList[1] == "pawn") {
         let pawnStep = color == "white" ? 1 : -1;
+        let tempPos = getPosFromEl(oppositeSymbols[i].parentElement);
         for (let j = 0; j < possibleMovesEl.length; j++) {
           if (
-            (oppositeSymbols[i][1] < 7 &&
+            (tempPos[1] > 0 &&
               equalPos(possibleMovesEl[j], [
-                oppositeSymbols[i][0] + pawnStep,
-                oppositeSymbols[i][1] + 1,
+                tempPos[0] + pawnStep,
+                tempPos[1] - 1,
               ])) ||
-            (oppositeSymbols[i][1] > 0 &&
+            (tempPos[1] < 7 &&
               equalPos(possibleMovesEl[j], [
-                oppositeSymbols[i][0] + pawnStep,
-                oppositeSymbols[i][1] - 1,
+                tempPos[0] + pawnStep,
+                tempPos[1] + 1,
               ]))
           ) {
             possibleMovesEl = possibleMovesEl.filter(
-              (pos) => !equalPos(pos, possibleMovesEl[i])
+              (pos) => !equalPos(pos, possibleMovesEl[j])
             );
-            break;
+            j--;
           }
         }
         continue;
@@ -393,6 +393,7 @@ function possibleMovesKing(pos, chosen = true) {
     getByPos(pos).appendChild(king);
     king.onclick = () => move(king);
   }
+
   return possibleMovesEl;
 }
 

@@ -7,11 +7,231 @@ import {
 } from "./commonOperations.js";
 import symbolsOperations from "./symbolsOperactions.js";
 
+if (localStorage.getItem("board") == undefined) {
+  localStorage.setItem(
+    "board",
+    `
+      <div>
+        <div class="whiteBlock">
+          <div class="black rook symbol">
+            <img src="imgs/black/BlackRook.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black knight symbol">
+            <img src="imgs/black/BlackKnight.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black bishop symbol">
+            <img src="imgs/black/BlackBishop.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black queen symbol">
+            <img src="imgs/black/BlackQueen.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black king symbol">
+            <img src="imgs/black/BlackKing.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black bishop symbol">
+            <img src="imgs/black/BlackBishop.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black knight symbol">
+            <img src="imgs/black/BlackKnight.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black rook symbol">
+            <img src="imgs/black/BlackRook.png" alt="" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="blackBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+      </div>
+      <div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+      </div>
+      <div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+      </div>
+      <div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+      </div>
+      <div>
+        <div class="whiteBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="blackBlock">
+          <div class="white rook symbol">
+            <img src="imgs/white/WhiteRook.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white knight symbol">
+            <img src="imgs/white/WhiteKnight.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white bishop symbol">
+            <img src="imgs/white/WhiteBishop.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white queen symbol">
+            <img src="imgs/white/WhiteQueen.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white king symbol">
+            <img src="imgs/white/WhiteKing.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white bishop symbol">
+            <img src="imgs/white/WhiteBishop.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white knight symbol">
+            <img src="imgs/white/WhiteKnight.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white rook symbol">
+            <img src="imgs/white/WhiteRook.png" alt="" />
+          </div>
+        </div>
+      </div>
+`
+  );
+  localStorage.setItem("teamTurn", true);
+}
+document.getElementById("board").innerHTML = localStorage.getItem("board");
+
 setupBlocks();
 giveOnclicks();
 let possibleMovesEl = [];
 let teamTurn = true;
 let chosen = null;
+
+teamTurn = JSON.parse(localStorage.getItem("teamTurn"));
 
 //  #   #   #   #   #
 export function move(symbol) {
@@ -64,6 +284,9 @@ function changePlaces(newPos, symbol) {
   teamTurn = !teamTurn;
   chosen = null;
 
+  localStorage.setItem("teamTurn", teamTurn ? "true" : "false");
+  localStorage.setItem("board", document.getElementById("board").innerHTML);
+
   if (isGameOver()) {
     takeawayOnclicks();
     let gameOver = document.getElementsByClassName("gameOver")[0];
@@ -76,6 +299,220 @@ function changePlaces(newPos, symbol) {
 `;
     gameOver.children[1].onclick = () => window.location.reload();
     document.body.appendChild(gameOver);
+    localStorage.setItem(
+      "board",
+      `
+      <div>
+        <div class="whiteBlock">
+          <div class="black rook symbol">
+            <img src="imgs/black/BlackRook.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black knight symbol">
+            <img src="imgs/black/BlackKnight.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black bishop symbol">
+            <img src="imgs/black/BlackBishop.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black queen symbol">
+            <img src="imgs/black/BlackQueen.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black king symbol">
+            <img src="imgs/black/BlackKing.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black bishop symbol">
+            <img src="imgs/black/BlackBishop.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black knight symbol">
+            <img src="imgs/black/BlackKnight.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black rook symbol">
+            <img src="imgs/black/BlackRook.png" alt="" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="blackBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="black pawn symbol firstMove">
+            <img src="imgs/black/BlackPawn.png" alt="" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+      </div>
+      <div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+      </div>
+      <div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+      </div>
+      <div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+      </div>
+      <div>
+        <div class="whiteBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="blackBlock">
+          <div class="white rook symbol">
+            <img src="imgs/white/WhiteRook.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white knight symbol">
+            <img src="imgs/white/WhiteKnight.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white bishop symbol">
+            <img src="imgs/white/WhiteBishop.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white queen symbol">
+            <img src="imgs/white/WhiteQueen.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white king symbol">
+            <img src="imgs/white/WhiteKing.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white bishop symbol">
+            <img src="imgs/white/WhiteBishop.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white knight symbol">
+            <img src="imgs/white/WhiteKnight.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white rook symbol">
+            <img src="imgs/white/WhiteRook.png" alt="" />
+          </div>
+        </div>
+      </div>
+`
+    );
+    localStorage.setItem("teamTurn", true);
   }
 }
 
@@ -151,7 +588,6 @@ function clearDangerousPos(symbol) {
         }
     }
   }
-
   if (threatenerSymbol == null) {
     parentElementSymbol.appendChild(symbol);
     return;

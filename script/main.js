@@ -276,13 +276,13 @@ export function move(symbol) {
     chosen[0] === parentElementSymbol[0] &&
     chosen[1] === parentElementSymbol[1]
   ) {
+    console.log(chosen);
     resetBlocks(possibleMovesEl);
     chosen = null;
     possibleMovesEl = [];
     symbol.parentElement.style.backgroundColor = getbackOriginalColor(
       getPosFromEl(symbol.parentElement)
     );
-    console.log("sdfdf");
   } else if (
     (teamTurn && symbol.classList[0] == "white") ||
     (!teamTurn && symbol.classList[0] == "black")
@@ -391,6 +391,9 @@ function takeawayOnclicks() {
 //  #   #   #   #   #
 
 function resetBlocks(possibleMovesEl) {
+  if (chosen != null && getByPos(chosen).children[0] != undefined)
+    getByPos(chosen).children[0].style.backgroundColor =
+      getbackOriginalColor(chosen);
   for (let i = 0; i < possibleMovesEl.length; i++) {
     let currEl = getByPos(possibleMovesEl[i]);
     currEl.style.backgroundColor = getbackOriginalColor(possibleMovesEl[i]);

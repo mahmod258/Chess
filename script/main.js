@@ -7,98 +7,97 @@ import {
 } from "./commonOperations.js";
 import symbolsOperations from "./symbolsOperactions.js";
 
-let defaultBoard = `
-      <div>
+let defaultBoard = ` <div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
         <div class="whiteBlock">
           <div class="black rook symbol">
             <img src="imgs/black/BlackRook.png" alt="" />
           </div>
         </div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
         <div class="blackBlock">
-          <div class="black knight symbol">
-            <img src="imgs/black/BlackKnight.png" alt="" />
+         <div class="black king symbol">
+            <img src="imgs/black/BlackKing.png" alt="" />
           </div>
         </div>
-        <div class="whiteBlock">
-          <div class="black bishop symbol">
-            <img src="imgs/black/BlackBishop.png" alt="" />
-          </div>
-        </div>
+      </div>
+      <div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+      </div>
+      <div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+      </div>
+      <div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+      </div>
+      <div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+      </div>
+      <div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+      </div>
+      <div>
+        <div class="whiteBlock"></div>
         <div class="blackBlock">
           <div class="black queen symbol">
             <img src="imgs/black/BlackQueen.png" alt="" />
           </div>
         </div>
-        <div class="whiteBlock">
-          <div class="black king symbol">
-            <img src="imgs/black/BlackKing.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="black bishop symbol">
-            <img src="imgs/black/BlackBishop.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="black knight symbol">
-            <img src="imgs/black/BlackKnight.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="black rook symbol">
-            <img src="imgs/black/BlackRook.png" alt="" />
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="blackBlock">
-          <div class="black pawn symbol firstMove">
-            <img src="imgs/black/BlackPawn.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="black pawn symbol firstMove">
-            <img src="imgs/black/BlackPawn.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="black pawn symbol firstMove">
-            <img src="imgs/black/BlackPawn.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="black pawn symbol firstMove">
-            <img src="imgs/black/BlackPawn.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="black pawn symbol firstMove">
-            <img src="imgs/black/BlackPawn.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="black pawn symbol firstMove">
-            <img src="imgs/black/BlackPawn.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="black pawn symbol firstMove">
-            <img src="imgs/black/BlackPawn.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="black pawn symbol firstMove">
-            <img src="imgs/black/BlackPawn.png" alt="" />
-          </div>
-        </div>
-      </div>
-      <div>
         <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="whiteBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
+        <div class="blackBlock">
+          <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
+          </div>
+        </div>
         <div class="whiteBlock"></div>
         <div class="blackBlock"></div>
       </div>
@@ -106,118 +105,20 @@ let defaultBoard = `
         <div class="blackBlock"></div>
         <div class="whiteBlock"></div>
         <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-      </div>
-      <div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-      </div>
-      <div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-        <div class="blackBlock"></div>
-        <div class="whiteBlock"></div>
-      </div>
-      <div>
         <div class="whiteBlock">
-          <div class="white pawn symbol firstMove">
-            <img src="imgs/white/WhitePawn.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="white pawn symbol firstMove">
-            <img src="imgs/white/WhitePawn.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="white pawn symbol firstMove">
-            <img src="imgs/white/WhitePawn.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="white pawn symbol firstMove">
-            <img src="imgs/white/WhitePawn.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="white pawn symbol firstMove">
-            <img src="imgs/white/WhitePawn.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="white pawn symbol firstMove">
-            <img src="imgs/white/WhitePawn.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="white pawn symbol firstMove">
-            <img src="imgs/white/WhitePawn.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="white pawn symbol firstMove">
-            <img src="imgs/white/WhitePawn.png" alt="" />
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="blackBlock">
-          <div class="white rook symbol">
-            <img src="imgs/white/WhiteRook.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="white knight symbol">
-            <img src="imgs/white/WhiteKnight.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="white bishop symbol">
-            <img src="imgs/white/WhiteBishop.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="white queen symbol">
-            <img src="imgs/white/WhiteQueen.png" alt="" />
-          </div>
-        </div>
-        <div class="blackBlock">
-          <div class="white king symbol">
+                  <div class="white king symbol">
             <img src="imgs/white/WhiteKing.png" alt="" />
           </div>
         </div>
+        <div class="blackBlock"></div>
+        <div class="whiteBlock"></div>
+        <div class="blackBlock"></div>
         <div class="whiteBlock">
-          <div class="white bishop symbol">
-            <img src="imgs/white/WhiteBishop.png" alt="" />
+                  <div class="white pawn symbol firstMove">
+            <img src="imgs/white/WhitePawn.png" alt="" />
           </div>
         </div>
-        <div class="blackBlock">
-          <div class="white knight symbol">
-            <img src="imgs/white/WhiteKnight.png" alt="" />
-          </div>
-        </div>
-        <div class="whiteBlock">
-          <div class="white rook symbol">
-            <img src="imgs/white/WhiteRook.png" alt="" />
-          </div>
-        </div>
-      </div>
-`;
-
+      </div>`;
 let board = document.getElementById("board");
 if (localStorage.getItem("board") == undefined) {
   localStorage.setItem("board", defaultBoard);
@@ -280,6 +181,10 @@ export function move(symbol) {
     resetBlocks(possibleMovesEl);
     chosen = null;
     possibleMovesEl = [];
+    symbol.parentElement.style.backgroundColor = getbackOriginalColor(
+      getPosFromEl(symbol.parentElement)
+    );
+    console.log("sdfdf");
   } else if (
     (teamTurn && symbol.classList[0] == "white") ||
     (!teamTurn && symbol.classList[0] == "black")
@@ -287,9 +192,10 @@ export function move(symbol) {
     resetBlocks(possibleMovesEl);
     let parentSymbolPos = getPosFromEl(symbol.parentElement);
     possibleMovesEl = symbolsOperations[symbol.classList[1]](parentSymbolPos);
-    if (isKingThreatened() && symbol.classList[1] != "king")
+    symbol.parentElement.style.backgroundColor = "yellow";
+    if (isKingThreatened() && symbol.classList[1] != "king") {
       filterImpossibleMoves(symbol);
-    else clearDangerousPos(symbol);
+    } else clearDangerousPos(symbol);
 
     for (let i = 0; i < possibleMovesEl.length; i++) {
       let currEl = getByPos(possibleMovesEl[i]);
@@ -306,6 +212,9 @@ export function move(symbol) {
 //  #   #   #   #   #
 
 function changePlaces(newPos, symbol) {
+  symbol.parentElement.style.backgroundColor = getbackOriginalColor(
+    getPosFromEl(symbol.parentElement)
+  );
   history.push(board.innerHTML);
 
   let newPosDOM = getByPos(newPos);
@@ -327,7 +236,6 @@ function changePlaces(newPos, symbol) {
   localStorage.setItem("teamTurn", teamTurn ? "true" : "false");
   localStorage.setItem("board", board.innerHTML);
   localStorage.setItem("history", JSON.stringify(history));
-
   if (isGameOver()) {
     takeawayOnclicks();
     let gameOver = document.getElementsByClassName("gameOver")[0];

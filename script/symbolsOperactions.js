@@ -383,17 +383,47 @@ function possibleMovesKing(pos, chosen = true) {
       let currPossibleMoves = symbolsOperations[
         oppositeSymbols[i].classList[1]
       ](getPosFromEl(oppositeSymbols[i].parentElement), false);
-
       for (let j = 0; j < currPossibleMoves.length; j++) {
         possibleMovesEl = possibleMovesEl.filter(
           (pos) => !equalPos(currPossibleMoves[j], pos)
         );
       }
+      let possibleForKing = null;
+      let oppositeSymbol = oppositeSymbols[i];
+      let oppositeSymbolParent = oppositeSymbols[i].parentElement;
+      for (let j = 0; j < possibleMovesEl.length; j++) {
+        if (
+          equalPos(
+            possibleMovesEl[j],
+            getPosFromEl(oppositeSymbols[i].parentElement)
+          )
+        ) {
+          possibleForKing = possibleMovesEl[j];
+          break;
+        }
+      }
+      if (possibleForKing != null) {
+        oppositeSymbols[i].remove();
+        for (let j = 0; j < oppositeSymbols.length; j++) {
+          let possibleTemp = symbolsOperations[oppositeSymbols[j].classList[1]](
+            getPosFromEl(oppositeSymbols[j].parentElement),
+            false
+          );
+          for (let k = 0; k < possibleTemp.length; k++) {
+            if (equalPos(possibleTemp[k], possibleForKing)) {
+              possibleMovesEl = possibleMovesEl.filter(
+                (pos) => !equalPos(possibleForKing, pos)
+              );
+              break;
+            }
+          }
+        }
+        oppositeSymbolParent.appendChild(oppositeSymbol);
+      }
     }
     getByPos(pos).appendChild(king);
     king.onclick = () => move(king);
   }
-
   return possibleMovesEl;
 }
 

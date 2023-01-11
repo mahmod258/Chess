@@ -233,7 +233,7 @@ giveOnclicks();
 let possibleMovesEl = [];
 let teamTurn = true;
 let chosen = null;
-let history = [];
+let history = JSON.parse(localStorage.history);
 let options = document.getElementsByClassName("options")[0];
 
 teamTurn = JSON.parse(localStorage.teamTurn);
@@ -247,7 +247,7 @@ options.children[0].onclick = () => {
 options.children[1].onclick = () => {
   if (history.length > 0) {
     let pastBoard = history.pop();
-
+    console.log(pastBoard);
     board.innerHTML = pastBoard;
     for (let i = 0; i < board.children.length; i++) {
       for (let j = 0; j < board.children[i].children.length; j++) {
@@ -276,9 +276,8 @@ export function move(symbol) {
     chosen[0] === parentElementSymbol[0] &&
     chosen[1] === parentElementSymbol[1]
   ) {
-    console.log(chosen);
-    resetBlocks(possibleMovesEl);
     chosen = null;
+    resetBlocks(possibleMovesEl);
     possibleMovesEl = [];
     symbol.parentElement.style.backgroundColor = getbackOriginalColor(
       getPosFromEl(symbol.parentElement)
@@ -392,8 +391,7 @@ function takeawayOnclicks() {
 
 function resetBlocks(possibleMovesEl) {
   if (chosen != null && getByPos(chosen).children[0] != undefined)
-    getByPos(chosen).children[0].style.backgroundColor =
-      getbackOriginalColor(chosen);
+    getByPos(chosen).style.backgroundColor = getbackOriginalColor(chosen);
   for (let i = 0; i < possibleMovesEl.length; i++) {
     let currEl = getByPos(possibleMovesEl[i]);
     currEl.style.backgroundColor = getbackOriginalColor(possibleMovesEl[i]);

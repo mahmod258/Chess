@@ -221,7 +221,7 @@ let board = document.getElementById("board");
 if (localStorage.getItem("board") == undefined) {
   localStorage.setItem("board", defaultBoard);
   localStorage.setItem("teamTurn", true);
-  localStorage.setItem("history", []);
+  localStorage.setItem("history", "[]");
 }
 board.innerHTML = localStorage.getItem("board");
 
@@ -233,6 +233,7 @@ giveOnclicks();
 let possibleMovesEl = [];
 let teamTurn = true;
 let chosen = null;
+console.log(localStorage.history);
 let history = JSON.parse(localStorage.history);
 let options = document.getElementsByClassName("options")[0];
 

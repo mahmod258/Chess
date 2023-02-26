@@ -348,7 +348,7 @@ function changePlaces(newPos, symbol) {
     document.body.appendChild(gameOver);
     localStorage.setItem("board", defaultBoard);
     localStorage.setItem("teamTurn", true);
-    localStorage.setItem("history", []);
+    localStorage.setItem("history", "[]");
   }
 }
 

@@ -233,7 +233,6 @@ giveOnclicks();
 let possibleMovesEl = [];
 let teamTurn = true;
 let chosen = null;
-console.log(localStorage.history);
 let history = JSON.parse(localStorage.history);
 let options = document.getElementsByClassName("options")[0];
 
@@ -248,7 +247,6 @@ options.children[0].onclick = () => {
 options.children[1].onclick = () => {
   if (history.length > 0) {
     let pastBoard = history.pop();
-    console.log(pastBoard);
     board.innerHTML = pastBoard;
     for (let i = 0; i < board.children.length; i++) {
       for (let j = 0; j < board.children[i].children.length; j++) {
@@ -288,13 +286,14 @@ export function move(symbol) {
     (!teamTurn && symbol.classList[0] == "black")
   ) {
     resetBlocks(possibleMovesEl);
+    possibleMovesEl = [];
+
     let parentSymbolPos = getPosFromEl(symbol.parentElement);
     possibleMovesEl = symbolsOperations[symbol.classList[1]](parentSymbolPos);
     symbol.parentElement.style.backgroundColor = "yellow";
     if (isKingThreatened() && symbol.classList[1] != "king") {
       filterImpossibleMoves(symbol);
     } else clearDangerousPos(symbol);
-
     for (let i = 0; i < possibleMovesEl.length; i++) {
       let currEl = getByPos(possibleMovesEl[i]);
       currEl.style.backgroundColor = "brown";
@@ -334,7 +333,7 @@ function changePlaces(newPos, symbol) {
   localStorage.setItem("teamTurn", teamTurn ? "true" : "false");
   localStorage.setItem("board", board.innerHTML);
   localStorage.setItem("history", JSON.stringify(history));
-  if (isGameOver()) {
+  if (isKingThreatened() && isGameOver()) {
     takeawayOnclicks();
     let gameOver = document.getElementsByClassName("gameOver")[0];
 
@@ -343,7 +342,7 @@ function changePlaces(newPos, symbol) {
     gameOver.innerHTML = `<h1>${
       teamTurn ? "black" : "white"
     } won</h1>  <button>play again</button>
-`;
+    `;
     gameOver.children[1].onclick = () => location.reload();
     document.body.appendChild(gameOver);
     localStorage.setItem("board", defaultBoard);
@@ -425,40 +424,36 @@ function clearDangerousPos(symbol) {
       getPosFromEl(enemySymbols[i].parentElement)
     );
     for (let j = 0; j < possibleMovesCurrEl.length; j++) {
-      if (equalPos(possibleMovesCurrEl[j], kingPos))
-        if ("pawn" == symbol.classList[1] || "knight" == symbol.classList[1]) {
-          possibleMovesEl = [];
-          parentElementSymbol.appendChild(symbol);
-          return;
-        } else {
-          threatenerSymbol = enemySymbols[i];
-          break;
-        }
+      if (equalPos(possibleMovesCurrEl[j], kingPos)) {
+        threatenerSymbol = enemySymbols[i];
+        break;
+      }
     }
   }
+
   if (threatenerSymbol == null) {
     parentElementSymbol.appendChild(symbol);
     return;
   }
 
   if (symbol.classList[1] == "pawn") {
+    let newPossibleMoves = [];
     for (let i = 0; i < possibleMovesEl.length; i++) {
-      let currEl = getByPos(possibleMovesEl[i]);
-      currEl.appendChild(symbol);
-      let possibleMovesThreatener = symbolsOperations[
-        threatenerSymbol.classList[1]
-      ](getPosFromEl(threatenerSymbol.parentElement));
-      for (let j = 0; j < possibleMovesThreatener.length; j++) {
-        if (equalPos(kingPos, possibleMovesThreatener[j])) {
-          possibleMovesEl = possibleMovesEl.filter(
-            (pos) => pos != possibleMovesThreatener[j]
-          );
-          currEl.children[0].remove();
-          break;
-        }
-        if (j == possibleMovesThreatener - 1) currEl.children[0].remove();
+      let currPosEl = getByPos(possibleMovesEl[i]);
+      let currPosElSymbol = null;
+      if (currPosEl.children.length == 1) {
+        currPosElSymbol = currPosEl.children[0];
+        currPosEl.children[0].remove();
       }
+      currPosEl.appendChild(symbol);
+      if (!isKingThreatened()) {
+        newPossibleMoves.push(possibleMovesEl[i]);
+      }
+      currPosEl.children[0].remove();
+      if (currPosElSymbol != null) currPosEl.appendChild(currPosElSymbol);
     }
+    possibleMovesEl = newPossibleMoves;
+    parentElementSymbol.appendChild(symbol);
     return;
   }
   possibleMovesEl = [];
@@ -578,37 +573,152 @@ function filterImpossibleMoves(symbol) {
 //  #   #   #   #   #
 
 function isGameOver() {
-  let friendlySymbols = document.getElementsByClassName(
-    teamTurn ? "white" : "black"
+  let color = teamTurn ? "white" : "black";
+  let king = document.getElementsByClassName(color + " king")[0];
+  let kingPos = getPosFromEl(king.parentElement);
+  let threatenerSymbol = null;
+  let threatenerSymbolPos = null;
+  let enemyColor = !teamTurn ? "white" : "black";
+  let enemySymbols = document.getElementsByClassName(enemyColor);
+  let friendlySymbols = document.getElementsByClassName(color);
+  let kingPossibleMoves = symbolsOperations["king"](
+    getPosFromEl(king.parentElement)
   );
-  for (let i = 0; i < friendlySymbols.length; i++) {
-    let symbol = friendlySymbols[i];
-    let possibleMovesCurrEl = symbolsOperations[symbol.classList[1]](
-      getPosFromEl(symbol.parentElement)
+  if (kingPossibleMoves.length > 0) return false;
+  for (let i = 0; i < enemySymbols.length; i++) {
+    if (enemySymbols[i].classList[1] == "king") continue;
+    let enemySymbolParent = enemySymbols[i].parentElement;
+    let possibleMovesCurrEl = symbolsOperations[enemySymbols[i].classList[1]](
+      getPosFromEl(enemySymbols[i].parentElement)
     );
-    let parentElementSymbol = symbol.parentElement;
     for (let j = 0; j < possibleMovesCurrEl.length; j++) {
-      let childEl = getByPos(possibleMovesCurrEl[j]).children[0];
-      parentElementSymbol.children[0].remove();
+      if (equalPos(possibleMovesCurrEl[j], kingPos)) {
+        if (threatenerSymbol != null) return true;
+        threatenerSymbol = enemySymbols[i];
+        threatenerSymbolPos = getPosFromEl(enemySymbols[i].parentElement);
+      }
+    }
+  }
 
-      if (childEl != undefined) {
-        getByPos(possibleMovesCurrEl[j]).children[0].remove();
-      }
-      getByPos(possibleMovesCurrEl[j]).appendChild(symbol);
-      if (!isKingThreatened()) {
-        getByPos(possibleMovesCurrEl[j]).children[0].remove();
-        if (childEl != undefined) {
-          getByPos(possibleMovesCurrEl[j]).appendChild(childEl);
-        }
-        parentElementSymbol.appendChild(symbol);
+  for (let i = 0; i < friendlySymbols.length; i++) {
+    if (friendlySymbols[i].classList[1] != "king") {
+      let friendlyParent = friendlySymbols[i].parentElement;
+      let threatenerSymbolParent = threatenerSymbol.parentElement;
+      let temp = friendlySymbols[i];
+      friendlyParent.children[0].remove();
+      threatenerSymbolParent.children[0].remove();
+
+      let isKingThreatenedBool = isKingThreatened();
+      friendlyParent.appendChild(temp);
+      threatenerSymbolParent.appendChild(threatenerSymbol);
+      if (isKingThreatenedBool) continue;
+    }
+    let currPossibleMoves = symbolsOperations[friendlySymbols[i].classList[1]](
+      getPosFromEl(friendlySymbols[i].parentElement)
+    );
+    for (let j = 0; j < currPossibleMoves.length; j++) {
+      if (
+        equalPos(
+          currPossibleMoves[j],
+          getPosFromEl(threatenerSymbol.parentElement)
+        )
+      )
         return false;
+    }
+  }
+  let threatPos = {};
+
+  if (
+    threatenerSymbol.classList[1] == "bishop" ||
+    (threatenerSymbol.classList[1] == "queen" &&
+      threatenerSymbolPos[0] != kingPos[0] &&
+      threatenerSymbolPos[1] != kingPos[1])
+  ) {
+    if (
+      (threatenerSymbolPos[0] > kingPos[0] &&
+        threatenerSymbolPos[1] > kingPos[1]) ||
+      (threatenerSymbolPos[0] < kingPos[0] &&
+        threatenerSymbolPos[1] < kingPos[1])
+    ) {
+      for (let i = 0, j = 0; j > 8 && i > 8; i++) {
+        if (
+          (i > threatenerSymbolPos[0] && i < kingPos[0]) ||
+          (i < threatenerSymbolPos[0] && i > kingPos[0])
+        ) {
+          threatPos["" + i + j] = true;
+        }
+        j++;
       }
-      getByPos(possibleMovesCurrEl[j]).children[0].remove();
-      if (childEl != undefined) {
-        parentElementSymbol.children[0].remove();
-        getByPos(possibleMovesCurrEl[j]).appendChild(childEl);
+    } else if (
+      (threatenerSymbolPos[0] < kingPos[0] &&
+        threatenerSymbolPos[1] > kingPos[1]) ||
+      (threatenerSymbolPos[0] > kingPos[0] &&
+        threatenerSymbolPos[1] < kingPos[1])
+    ) {
+      for (let i = 0, j = 7; j > 8 && i >= 0; i++) {
+        if (
+          (i > threatenerSymbolPos[0] && i < kingPos[0]) ||
+          (i < threatenerSymbolPos[0] && i > kingPos[0])
+        ) {
+          threatPos["" + i + j] = true;
+        }
+        j--;
       }
-      parentElementSymbol.appendChild(symbol);
+    }
+  } else if (
+    threatenerSymbol.classList[1] == "rook" ||
+    (threatenerSymbol.classList[1] == "queen" &&
+      (threatenerSymbolPos[0] == kingPos[0] ||
+        threatenerSymbolPos[1] == kingPos[1]))
+  ) {
+    if (threatenerSymbolPos[0] == kingPos[0]) {
+      let i = 0;
+      while (i < 8) {
+        if (
+          (i < threatenerSymbolPos[0] && i > kingPos[0]) ||
+          (i > threatenerSymbolPos[0] && i < kingPos[0])
+        )
+          threatPos["" + i + threatenerSymbolPos[1]] = true;
+        i++;
+      }
+    } else if (threatenerSymbolPos[1] == kingPos[1]) {
+      let i = 0;
+      while (i < 8) {
+        console.log();
+        if (
+          (i < threatenerSymbolPos[0] && i > kingPos[0]) ||
+          (i > threatenerSymbolPos[0] && i < kingPos[0])
+        ) {
+          threatPos["" + i + threatenerSymbolPos[1]] = true;
+        }
+        i++;
+      }
+    }
+  }
+  for (let i = 0; i < friendlySymbols.length; i++) {
+    if (friendlySymbols[i].classList[1] != "king") {
+      let friendlyParent = friendlySymbols[i].parentElement;
+      let threatenerSymbolParent = threatenerSymbol.parentElement;
+      let temp = friendlySymbols[i];
+      friendlyParent.children[0].remove();
+      threatenerSymbolParent.children[0].remove();
+
+      let isKingThreatenedBool = isKingThreatened();
+      friendlyParent.appendChild(temp);
+      threatenerSymbolParent.appendChild(threatenerSymbol);
+      if (isKingThreatenedBool) continue;
+
+      let friendlyPossibleMoves = symbolsOperations[
+        friendlySymbols[i].classList[1]
+      ](getPosFromEl(friendlySymbols[i].parentElement));
+      for (let j = 0; j < friendlyPossibleMoves.length; j++) {
+        if (
+          threatPos[
+            "" + friendlyPossibleMoves[j][0] + friendlyPossibleMoves[j][1]
+          ]
+        )
+          return false;
+      }
     }
   }
   return true;

@@ -466,59 +466,50 @@ function clearDangerousPos(symbol) {
       threatenerSymbol.classList[1] == "queen") &&
     threatenerPos[1] == symbolPos[1]
   ) {
-    if (symbolPos[0] > threatenerPos[0])
-      for (let i = symbolPos[0] - 1; i >= threatenerPos[0]; i--)
-        possibleMovesEl.push([i, symbolPos[1]]);
-    else if (symbolPos[0] < threatenerPos[0])
-      for (let i = symbolPos[0] + 1; i <= threatenerPos[0]; i++)
-        possibleMovesEl.push([i, symbolPos[1]]);
-    else if (symbolPos[1] > threatenerPos[1])
-      for (let i = symbolPos[1] - 1; i >= threatenerPos[1]; i--)
-        possibleMovesEl.push([symbolPos[0], i]);
-    else if (symbolPos[1] < threatenerPos[1])
-      for (let i = symbolPos[1] + 1; i <= threatenerPos[1]; i++)
-        possibleMovesEl.push([symbolPos[0], i]);
+    if (kingPos[0] > threatenerPos[0])
+      for (let i = kingPos[0] - 1; i >= threatenerPos[0]; i--)
+        possibleMovesEl.push([i, kingPos[1]]);
+    else if (kingPos[0] < threatenerPos[0])
+      for (let i = kingPos[0] + 1; i <= threatenerPos[0]; i++)
+        possibleMovesEl.push([i, kingPos[1]]);
+    else if (kingPos[1] > threatenerPos[1])
+      for (let i = kingPos[1] - 1; i >= threatenerPos[1]; i--)
+        possibleMovesEl.push([kingPos[0], i]);
+    else if (kingPos[1] < threatenerPos[1])
+      for (let i = kingPos[1] + 1; i <= threatenerPos[1]; i++)
+        possibleMovesEl.push([kingPos[0], i]);
   } else if (
     (symbol.classList[1] == "bishop" || symbol.classList[1] == "queen") &&
     (threatenerSymbol.classList[1] == "bishop" ||
       threatenerSymbol.classList[1] == "queen")
   ) {
-    if (symbolPos[0] > threatenerPos[0] && symbolPos[1] > threatenerPos[1]) {
-      let i = symbolPos[0] - 1,
-        j = symbolPos[1] - 1;
+    if (kingPos[0] > threatenerPos[0] && kingPos[1] > threatenerPos[1]) {
+      let i = kingPos[0] - 1,
+        j = kingPos[1] - 1;
       for (; !equalPos(threatenerPos, [i, j]); i--) {
         possibleMovesEl.push([i, j]);
         j--;
       }
       possibleMovesEl.push([i, j]);
-    } else if (
-      symbolPos[0] < threatenerPos[0] &&
-      symbolPos[1] < threatenerPos[1]
-    ) {
-      let i = symbolPos[0] + 1,
-        j = symbolPos[1] + 1;
+    } else if (kingPos[0] < threatenerPos[0] && kingPos[1] < threatenerPos[1]) {
+      let i = kingPos[0] + 1,
+        j = kingPos[1] + 1;
       for (; !equalPos(threatenerPos, [i, j]); i++) {
         possibleMovesEl.push([i, j]);
         j++;
       }
       possibleMovesEl.push([i, j]);
-    } else if (
-      symbolPos[0] > threatenerPos[0] &&
-      symbolPos[1] < threatenerPos[1]
-    ) {
-      let i = symbolPos[0] - 1,
-        j = symbolPos[1] + 1;
+    } else if (kingPos[0] > threatenerPos[0] && kingPos[1] < threatenerPos[1]) {
+      let i = kingPos[0] - 1,
+        j = kingPos[1] + 1;
       for (; !equalPos(threatenerPos, [i, j]); i--) {
         possibleMovesEl.push([i, j]);
         j++;
       }
       possibleMovesEl.push([i, j]);
-    } else if (
-      symbolPos[0] < threatenerPos[0] &&
-      symbolPos[1] > threatenerPos[1]
-    ) {
-      let i = symbolPos[0] + 1,
-        j = symbolPos[1] - 1;
+    } else if (kingPos[0] < threatenerPos[0] && kingPos[1] > threatenerPos[1]) {
+      let i = kingPos[0] + 1,
+        j = kingPos[1] - 1;
       for (; !equalPos(threatenerPos, [i, j]); i++) {
         possibleMovesEl.push([i, j]);
         j--;
@@ -526,6 +517,12 @@ function clearDangerousPos(symbol) {
       possibleMovesEl.push([i, j]);
     }
   }
+  let filteredPossibleMoves = [];
+  for (let i = 0; i < possibleMovesEl.length; i++) {
+    if (!equalPos(possibleMovesEl[i], symbolPos))
+      filteredPossibleMoves.push(possibleMovesEl[i]);
+  }
+  possibleMovesEl = filteredPossibleMoves;
   parentElementSymbol.appendChild(symbol);
 }
 

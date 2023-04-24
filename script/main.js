@@ -609,42 +609,41 @@ function isGameOver() {
       friendlyParent.appendChild(temp);
       threatenerSymbolParent.appendChild(threatenerSymbol);
       if (isKingThreatenedBool) continue;
-    }
-    let currPossibleMoves = symbolsOperations[friendlySymbols[i].classList[1]](
-      getPosFromEl(friendlySymbols[i].parentElement)
-    );
-    for (let j = 0; j < currPossibleMoves.length; j++) {
-      if (
-        equalPos(
-          currPossibleMoves[j],
-          getPosFromEl(threatenerSymbol.parentElement)
+
+      let currPossibleMoves = symbolsOperations[
+        friendlySymbols[i].classList[1]
+      ](getPosFromEl(friendlySymbols[i].parentElement));
+      for (let j = 0; j < currPossibleMoves.length; j++) {
+        if (
+          equalPos(
+            currPossibleMoves[j],
+            getPosFromEl(threatenerSymbol.parentElement)
+          )
         )
-      )
-        return false;
+          return false;
+      }
     }
   }
   let threatPos = {};
-
   if (
     threatenerSymbol.classList[1] == "bishop" ||
     (threatenerSymbol.classList[1] == "queen" &&
       threatenerSymbolPos[0] != kingPos[0] &&
       threatenerSymbolPos[1] != kingPos[1])
   ) {
+    let upper =
+      threatenerSymbolPos[0] > kingPos[0] ? threatenerSymbolPos : kingPos;
+    let lower =
+      threatenerSymbolPos[0] < kingPos[0] ? threatenerSymbolPos : kingPos;
     if (
       (threatenerSymbolPos[0] > kingPos[0] &&
         threatenerSymbolPos[1] > kingPos[1]) ||
       (threatenerSymbolPos[0] < kingPos[0] &&
         threatenerSymbolPos[1] < kingPos[1])
     ) {
-      for (let i = 0, j = 0; j > 8 && i > 8; i++) {
-        if (
-          (i > threatenerSymbolPos[0] && i < kingPos[0]) ||
-          (i < threatenerSymbolPos[0] && i > kingPos[0])
-        ) {
-          threatPos["" + i + j] = true;
-        }
-        j++;
+      for (let i = upper[0] - 1, j = upper[1] - 1; i > lower[0]; i--) {
+        threatPos["" + i + j] = true;
+        j--;
       }
     } else if (
       (threatenerSymbolPos[0] < kingPos[0] &&
@@ -652,14 +651,9 @@ function isGameOver() {
       (threatenerSymbolPos[0] > kingPos[0] &&
         threatenerSymbolPos[1] < kingPos[1])
     ) {
-      for (let i = 0, j = 7; j > 8 && i >= 0; i++) {
-        if (
-          (i > threatenerSymbolPos[0] && i < kingPos[0]) ||
-          (i < threatenerSymbolPos[0] && i > kingPos[0])
-        ) {
-          threatPos["" + i + j] = true;
-        }
-        j--;
+      for (let i = upper[0] - 1, j = upper[1] + 1; i > lower[0]; i--) {
+        threatPos["" + i + j] = true;
+        j++;
       }
     }
   } else if (
@@ -681,7 +675,6 @@ function isGameOver() {
     } else if (threatenerSymbolPos[1] == kingPos[1]) {
       let i = 0;
       while (i < 8) {
-        console.log();
         if (
           (i < threatenerSymbolPos[0] && i > kingPos[0]) ||
           (i > threatenerSymbolPos[0] && i < kingPos[0])
@@ -692,6 +685,7 @@ function isGameOver() {
       }
     }
   }
+  console.log(threatPos);
   for (let i = 0; i < friendlySymbols.length; i++) {
     if (friendlySymbols[i].classList[1] != "king") {
       let friendlyParent = friendlySymbols[i].parentElement;
